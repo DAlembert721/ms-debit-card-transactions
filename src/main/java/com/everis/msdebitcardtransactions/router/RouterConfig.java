@@ -13,10 +13,10 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> transactionsRoutes(TransactionsHandler handler) {
-        return route(GET("/ms-debit-card-transactions/transactions"), handler::findAllTransactions)
-                .andRoute(GET("/ms-debit-card-transactions/debit-cards/transactions}"), handler::findAllTransactionsByDebitCard)
-                .andRoute(GET("/ms-debit-card-transactions/transactions/{transactionNumber}"), handler::findTransactionByTransactionNumber)
-                .andRoute(POST("/ms-debit-card-transactions/transactions"), handler::createTransaction)
-                .andRoute(DELETE("/ms-debit-card-transactions/transactions"), handler::deleteTransaction);
+        return route(GET("/transactions"), handler::findAllTransactions)
+                .andRoute(GET("/debit-cards/{debitCardNumber}/transactions"), handler::findAllTransactionsByDebitCard)
+                .andRoute(GET("/transactions/{transactionNumber}"), handler::findTransactionByTransactionNumber)
+                .andRoute(POST("/transactions"), handler::createTransaction)
+                .andRoute(DELETE("/transactions"), handler::deleteTransaction);
     }
 }

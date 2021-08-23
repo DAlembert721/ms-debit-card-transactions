@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -22,4 +23,11 @@ public class DebitCard {
     private String cardNumber;
     private List<BankAccount> registeredAccounts = new ArrayList<>();
     private LocalDate expirationDate;
+
+    static public BankAccount findToUseAccount(DebitCard debitCard, Double amount) {
+        return debitCard.getRegisteredAccounts()
+                .stream()
+                .filter(bankAccount -> bankAccount.getBalance() >= amount)
+                .collect(Collectors.toList()).get(0);
+    }
 }

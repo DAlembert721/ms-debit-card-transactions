@@ -19,7 +19,9 @@ public class Transaction {
     @NotNull
     private Double amount;
     private String transactionNumber;
+    private DebitCard debitCard;
     private LocalDate date;
     private String concept;
+    private TypeTransaction typeTransaction;
 
 }
