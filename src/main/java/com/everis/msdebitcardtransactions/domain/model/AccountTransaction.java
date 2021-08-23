@@ -16,7 +16,7 @@ public class AccountTransaction {
     private BankAccount savingAccount;
     private BankAccount fixedTerm;
     private BankAccount currentAccount;
-    private String transactionCode = generateTransactionCode();
+    private String transactionCode;
     private TypeTransaction typeTransaction;
     private Double transactionAmount;
     private Double commissionAmount;
@@ -24,17 +24,18 @@ public class AccountTransaction {
     static public AccountTransaction buildAccountTransaction(Transaction transaction, BankAccount bankAccount) {
         AccountTransaction accountTransaction = new AccountTransaction();
         accountTransaction.setTransactionAmount(transaction.getAmount());
+        accountTransaction.setTransactionCode(transaction.getTransactionNumber());
         accountTransaction.setTypeTransaction(transaction.getTypeTransaction());
         switch(bankAccount.getAccountType()) {
-            case "CURRENT": {
+            case "Current": {
                 accountTransaction.setCurrentAccount(bankAccount);
                 return accountTransaction;
             }
-            case "FIXED": {
+            case "Fixed": {
                 accountTransaction.setFixedTerm(bankAccount);
                 return accountTransaction;
             }
-            case "SAVING": {
+            case "Saving": {
                 accountTransaction.setSavingAccount(bankAccount);
                 return accountTransaction;
             }
@@ -45,9 +46,5 @@ public class AccountTransaction {
 
     }
 
-    private String generateTransactionCode() {
-        final String PREFIX = "DCT-";
-        Random random = new Random();
-        return PREFIX + random.nextInt(999999999);
-    }
+
 }

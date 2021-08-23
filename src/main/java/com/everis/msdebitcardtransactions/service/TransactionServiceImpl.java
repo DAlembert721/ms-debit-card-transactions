@@ -1,5 +1,6 @@
 package com.everis.msdebitcardtransactions.service;
 
+import com.everis.msdebitcardtransactions.domain.model.AccountTransaction;
 import com.everis.msdebitcardtransactions.domain.model.BankAccount;
 import com.everis.msdebitcardtransactions.domain.model.DebitCard;
 import com.everis.msdebitcardtransactions.domain.model.Transaction;
@@ -53,13 +54,13 @@ public class TransactionServiceImpl implements TransactionService {
                 .flatMap(debitCard -> {
                     Transaction transaction = CreateTransactionDto.dtoToEntity(debitCard, createTransactionDto);
                     return transactionRepository.save(transaction);
-                }).map(transaction -> {
+                }).flatMap(transaction -> {
                     BankAccount bankAccount = DebitCard.findToUseAccount(transaction.getDebitCard(), transaction.getAmount());
-                    transactionAccountWebClientService.sendTransactionByTypeAccount(transaction, bankAccount)
+                    return transactionAccountWebClientService.sendTransactionByTypeAccount(transaction, bankAccount)
+                            .map(accountTransaction -> TransactionDto.entityToDto(transaction))
                             .switchIfEmpty(Mono.error(new RuntimeException("Error on create transaction Account")))
                             .onErrorResume(Mono::error);
-                    return transaction;
-                }).map(TransactionDto::entityToDto)
+                })
                 .switchIfEmpty(Mono.empty())
                 .onErrorResume(throwable -> Mono.error(new BadRequestException(throwable.getMessage())));
     }

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Random;
 
 @Document("Transaction")
 @Getter
@@ -23,5 +24,11 @@ public class Transaction {
     private LocalDate date;
     private String concept;
     private TypeTransaction typeTransaction;
+
+    static public String generateTransactionNumber() {
+        final String PREFIX = "DCT-";
+        Random random = new Random();
+        return PREFIX + random.nextInt(999999999);
+    }
 
 }

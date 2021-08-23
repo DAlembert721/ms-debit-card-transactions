@@ -29,6 +29,7 @@ public class CreateTransactionDto {
         transaction.setDate(LocalDate.now());
         transaction.setTypeTransaction(createTransactionDto.getTypeTransaction());
         transaction.setConcept(createTransactionDto.getConcept());
+        transaction.setTransactionNumber(Transaction.generateTransactionNumber());
         return transaction;
     }
 
